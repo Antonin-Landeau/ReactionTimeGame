@@ -1,17 +1,45 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <h1>Reaction Game</h1>
+  <button class="play-buttton" @click="startGame" v-if="!isPlaying">Play</button>
+  <div v-if="isPlaying">
+    <ReactionZone :delay="delay" @endGame="endGame" />
+  </div>
+  <div v-if="isEnded">
+    <Result :score="score"/>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import ReactionZone from "./components/ReactionZone.vue";
+import Result from "./components/Result.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    ReactionZone,
+    Result,
+  },
+  data() {
+    return {
+      isPlaying: false,
+      isEnded: false,
+      delay: null,
+      score: null,
+    };
+  },
+  methods: {
+    startGame () {
+      this.isEnded = false
+      this.delay = 2000 + Math.random() *5000
+      this.isPlaying = true
+    },
+    endGame (score) {
+      this.score = score;
+      this.isEnded = true
+      this.isPlaying = false
+    }
+  },
+};
 </script>
 
 <style>
@@ -22,5 +50,16 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+button{
+  background-color: aquamarine;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  color: #2c3e50;
+  font-weight: 600;
+}
+button:hover {
+  cursor: pointer;
 }
 </style>
